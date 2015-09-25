@@ -4,6 +4,7 @@
     "dojo/on",
     "dojo/_base/declare",
     "dojo/_base/lang",
+    "dojo/dom-construct",
 
     "dijit/_CssStateMixin",
     "dijit/_Widget",
@@ -19,6 +20,7 @@ function (
     on,
     declare,
     lang,
+    domConstruct,
 
     _CssStateMixin,
     _Widget,
@@ -33,16 +35,6 @@ function (
 
         templateString: "<div class=\"dijitInline\">\
                             <ul data-dojo-attach-point=\"colorPickerList\" class=\"colorPickerList\">\
-                                <li><a href=\"#\" data-color=\"#7cb5ec\" style=\"background-color:#7cb5ec;\"><span>Color name 1</span></a></li>\
-                                <li><a href=\"#\" data-color=\"#434348\" style=\"background-color:#434348;\"><span>Color name 1</span></a></li>\
-                                <li><a href=\"#\" data-color=\"#90ed7d\" style=\"background-color:#90ed7d;\"><span>Color name 1</span></a></li>\
-                                <li><a href=\"#\" data-color=\"#f7a35c\" style=\"background-color:#f7a35c;\"><span>Color name 1</span></a></li>\
-                                <li><a href=\"#\" data-color=\"#8085e9\" style=\"background-color:#8085e9;\"><span>Color name 1</span></a></li>\
-                                <li><a href=\"#\" data-color=\"#f15c80\" style=\"background-color:#f15c80;\"><span>Color name 1</span></a></li>\
-                                <li><a href=\"#\" data-color=\"#e4d354\" style=\"background-color:#e4d354;\"><span>Color name 1</span></a></li>\
-                                <li><a href=\"#\" data-color=\"#8085e8\" style=\"background-color:#8085e8;\"><span>Color name 1</span></a></li>\
-                                <li><a href=\"#\" data-color=\"#8d4653\" style=\"background-color:#8d4653;\"><span>Color name 1</span></a></li>\
-                                <li><a href=\"#\" data-color=\"#91e8e1\" style=\"background-color:#91e8e1;\"><span>Color name 1</span></a></li>\
                             </ul>\
                         </div>",
         intermediateChanges: false,
@@ -53,11 +45,13 @@ function (
         },
         postCreate: function () {
 
+            this._initColors();
             this.inherited(arguments);
             this._loadCssFile();
 
             this.pickedColor = this.value;
             this._bindEvents(this);
+    
         },
         startup: function () {
             this._markChosenColorInList(this.pickedColor);
@@ -134,6 +128,13 @@ function (
                 link.media = 'all';
                 head.appendChild(link);
             }
+        },
+        _initColors: function () {
+            var colorPicker = this.colorPickerList;
+            array.forEach(this.selections, function (selection) {
+                domConstruct.create('a', { href: '#', title: selection.text, 'data-color': selection.value, style: 'background-color:' + selection.value + ';' }
+                    , domConstruct.create('li', null, colorPicker));
+            });
         }
     });
 });
