@@ -1,4 +1,4 @@
-﻿define([
+define([
     "dojo/_base/array",
     "dojo/query",
     "dojo/on",
@@ -54,7 +54,6 @@ function (
     
         },
         startup: function () {
-            this._markChosenColorInList(this.pickedColor);
         },
         isValid: function () {
             return !this.required || lang.isArray(this.value) && this.value.length > 0 && this.value.join() != "";
@@ -108,6 +107,7 @@ function (
             // set value to tmp value
             if (updateTextbox) {
                 this.pickedColor = value;
+                this._markChosenColorInList(this.pickedColor);
             }
 
             if (this._started && this.validate()) {
